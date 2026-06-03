@@ -144,32 +144,31 @@ def fetch_updates() -> dict[str, list[dict]]:
 
 def card_html(item: dict, brand: dict) -> str:
     pub_tag = (
-        f'<span style="font-size:11px;color:#aaa;margin-left:8px;">'
+        f'<span style="font-size:11px;color:#4A6070;margin-left:8px;">'
         f'{item["pub_str"]}</span>'
         if item["pub_str"] else ""
     )
     summary_tag = (
-        f'<p style="margin:6px 0 0;font-size:13px;color:#666;'
+        f'<p style="margin:6px 0 0;font-size:13px;color:#7A9AAA;'
         f'line-height:1.5;">{item["summary"]}…</p>'
         if item["summary"] else ""
     )
     return f"""
       <a href="{item['link']}" target="_blank" style="text-decoration:none;display:block;">
         <div style="
-          background:#ffffff;
-          border:1px solid {brand['border']};
+          background:#1C2A32;
+          border:1px solid rgba(255,255,255,.07);
           border-left:4px solid {brand['color']};
           border-radius:10px;
           padding:14px 16px;
           margin-bottom:10px;
-          transition:box-shadow .2s;
         ">
           <div style="display:flex;align-items:baseline;flex-wrap:wrap;">
             <span style="
               font-family:Georgia,'Times New Roman',serif;
               font-size:14.5px;
               font-weight:600;
-              color:#1a1a2e;
+              color:#E8EFF3;
               line-height:1.4;
             ">{item['title']}</span>
             {pub_tag}
@@ -217,36 +216,36 @@ def build_email(data: dict[str, list[dict]]) -> str:
             f'border-radius:20px;padding:2px 10px;font-size:11px;'
             f'font-weight:700;margin-left:8px;">{count}</span>'
             if count else
-            '<span style="color:#bbb;font-size:12px;margin-left:8px;">nessuna novità</span>'
+            '<span style="color:#4A6070;font-size:12px;margin-left:8px;">nessuna novità</span>'
         )
 
         cards = "".join(card_html(i, brand) for i in items) if items else (
-            '<p style="color:#bbb;font-size:13px;font-style:italic;padding:8px 0;">'
-            'Nessun aggiornamento rilevante nelle ultime 48 ore.</p>'
+            '<p style="color:#4A6070;font-size:13px;font-style:italic;padding:8px 0;">'
+            '💤 Nessun aggiornamento rilevante nelle ultime 48 ore.</p>'
         )
 
         sections += f"""
     <!-- {company} -->
-    <div style="margin-bottom:32px;">
+    <div style="margin-bottom:28px;">
       <div style="
-        background:{header_bg};
+        background:#1C2A32;
         border-radius:10px 10px 0 0;
         padding:12px 16px;
+        border-bottom:2px solid {brand['color']};
         display:flex;
         align-items:center;
-        border-bottom:2px solid {brand['border']};
       ">
         <span style="font-size:18px;margin-right:8px;">{brand['emoji']}</span>
         <span style="
           font-family:Georgia,'Times New Roman',serif;
           font-size:16px;
           font-weight:700;
-          color:{header_col};
+          color:{brand['color']};
           letter-spacing:.3px;
         ">{label}</span>
         {count_tag}
       </div>
-      <div style="padding:14px 4px 0;">
+      <div style="padding:12px 0 0;">
         {cards}
       </div>
     </div>"""
@@ -258,49 +257,87 @@ def build_email(data: dict[str, list[dict]]) -> str:
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>AI Coding Digest</title>
 </head>
-<body style="margin:0;padding:0;background:#F0F2F5;font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
+<body style="margin:0;padding:0;background:#0F1A1F;font-family:'Segoe UI',Helvetica,Arial,sans-serif;">
 
   <!-- Wrapper -->
-  <table width="100%" cellpadding="0" cellspacing="0" style="background:#F0F2F5;padding:32px 16px;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0F1A1F;padding:32px 16px;">
     <tr><td align="center">
     <table width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
 
       <!-- HEADER -->
       <tr><td style="
-        background:linear-gradient(135deg,#0D0D1A 0%,#1A1040 50%,#0D1F3C 100%);
-        border-radius:16px 16px 0 0;
-        padding:36px 36px 28px;
+        background:linear-gradient(160deg,#0F2027 0%,#1A3A4A 45%,#0F2A1F 100%);
+        border-radius:20px 20px 0 0;
+        padding:40px 36px 32px;
         text-align:center;
+        position:relative;
       ">
-        <div style="font-size:32px;margin-bottom:8px;">⚡</div>
+        <!-- emoji row -->
+        <div style="font-size:26px;letter-spacing:10px;margin-bottom:18px;opacity:.9;">
+          🤖&nbsp;🧠&nbsp;💻&nbsp;🔬&nbsp;⚙️
+        </div>
+
+        <!-- title -->
         <h1 style="
-          margin:0 0 6px;
+          margin:0 0 8px;
           font-family:Georgia,'Times New Roman',serif;
-          font-size:26px;
+          font-size:30px;
           font-weight:700;
           color:#FFFFFF;
-          letter-spacing:.5px;
+          letter-spacing:1px;
+          line-height:1.2;
         ">AI Coding Digest</h1>
-        <p style="margin:0 0 16px;font-size:13px;color:rgba(255,255,255,.55);letter-spacing:.8px;text-transform:uppercase;">
-          Anthropic · OpenAI · Google AI
+
+        <!-- subtitle brand tags -->
+        <p style="margin:0 0 22px;font-size:12px;letter-spacing:1.2px;text-transform:uppercase;">
+          <span style="color:#E8896A;font-weight:600;">Anthropic</span>
+          <span style="color:rgba(255,255,255,.3);margin:0 8px;">·</span>
+          <span style="color:#5CD6AE;font-weight:600;">OpenAI</span>
+          <span style="color:rgba(255,255,255,.3);margin:0 8px;">·</span>
+          <span style="color:#7AB4F5;font-weight:600;">Google AI</span>
         </p>
+
+        <!-- date + count pill -->
+        <table cellpadding="0" cellspacing="0" align="center">
+          <tr>
+            <td style="
+              background:rgba(255,255,255,.12);
+              border:1px solid rgba(255,255,255,.22);
+              border-radius:40px;
+              padding:8px 22px;
+            ">
+              <span style="font-size:13px;color:#FFFFFF;font-weight:500;">
+                📆 {today}
+              </span>
+              <span style="color:rgba(255,255,255,.3);margin:0 10px;">|</span>
+              <span style="font-size:13px;color:#FFFFFF;font-weight:500;">
+                🔎 {subtitle}
+              </span>
+            </td>
+          </tr>
+        </table>
+
+        <!-- thin accent line at bottom -->
         <div style="
-          display:inline-block;
-          background:rgba(255,255,255,.1);
-          border:1px solid rgba(255,255,255,.2);
-          border-radius:30px;
-          padding:6px 18px;
-          font-size:13px;
-          color:rgba(255,255,255,.8);
-        ">📅 {today} &nbsp;·&nbsp; {subtitle}</div>
+          margin-top:28px;
+          height:2px;
+          background:linear-gradient(90deg,
+            transparent 0%,
+            #E8896A 20%,
+            #5CD6AE 50%,
+            #7AB4F5 80%,
+            transparent 100%);
+          border-radius:2px;
+          opacity:.6;
+        "></div>
       </td></tr>
 
       <!-- BODY -->
       <tr><td style="
-        background:#FFFFFF;
-        border-radius:0 0 16px 16px;
-        padding:32px 32px 24px;
-        box-shadow:0 8px 32px rgba(0,0,0,.08);
+        background:#141E24;
+        border-radius:0 0 20px 20px;
+        padding:32px 32px 28px;
+        box-shadow:0 16px 48px rgba(0,0,0,.4);
       ">
         {sections}
 
@@ -308,16 +345,16 @@ def build_email(data: dict[str, list[dict]]) -> str:
         <div style="
           margin-top:24px;
           padding-top:20px;
-          border-top:1px solid #EFEFEF;
+          border-top:1px solid rgba(255,255,255,.07);
           text-align:center;
           font-size:11px;
-          color:#BBBBBB;
-          line-height:1.8;
+          color:#4A6070;
+          line-height:1.9;
         ">
-          Generato automaticamente ogni sera da <strong style="color:#888;">AI Coding Digest</strong><br>
-          via GitHub Actions · feedparser · Gmail SMTP<br>
-          <span style="color:#DDD;">──────────────────</span><br>
-          Fonti: Anthropic News · OpenAI News · Google AI Blog · Google Developers Blog
+          🤖 Generato automaticamente ogni sera da <strong style="color:#5A7A8A;">AI Coding Digest</strong><br>
+          ⚙️ GitHub Actions &nbsp;·&nbsp; 🐍 feedparser &nbsp;·&nbsp; 📬 Gmail SMTP<br>
+          <span style="color:#1E2E38;">──────────────────</span><br>
+          📡 Fonti: Anthropic News · OpenAI News · Google AI Blog · Google Developers Blog
         </div>
       </td></tr>
 
@@ -331,7 +368,7 @@ def build_email(data: dict[str, list[dict]]) -> str:
 
 def send_email(html: str) -> None:
     now_it  = datetime.utcnow() + timedelta(hours=2)
-    subject = f"⚡ AI Coding Digest — {now_it.strftime('%-d/%m/%Y')}"
+    subject = f"🤖💻 AI Coding Digest — {now_it.strftime('%-d/%m/%Y')}"
 
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
