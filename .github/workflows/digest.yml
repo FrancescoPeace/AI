@@ -1,0 +1,32 @@
+name: AI Coding Digest
+
+on:
+  schedule:
+    # 18:00 UTC = 20:00 ora legale italiana (CEST, UTC+2)
+    # In inverno (CET, UTC+1) corrisponde alle 19:00 → aggiusta a 19:00 UTC se necessario
+    - cron: "0 18 * * *"
+
+  workflow_dispatch:
+
+jobs:
+  run-digest:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run digest
+        env:
+          EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+          EMAIL_TO: ${{ secrets.EMAIL_TO }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
+        run: python digest.py
